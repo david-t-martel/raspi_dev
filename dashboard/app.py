@@ -48,8 +48,12 @@ def get_service_status(service):
     try:
         output = subprocess.check_output(["systemctl", "is-active", service], universal_newlines=True)
         return output.strip()
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Service check failed: {e}")
         return "unknown"
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return "error"
 
 @app.route("/")
 def index():
