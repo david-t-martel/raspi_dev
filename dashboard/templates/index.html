@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Camera Dashboard</title>
+		<link rel="stylesheet" href="/static/styles.css">
+	</head>
+
+	<body>
+		<h1>Raspberry Pi Camera Dashboard</h1>
+		<h3>Services</h3>
+		<p>RTSP Stream: {{ rtsp_status }} | <a href="/start/rtsp-server">Start</a> | <a
+				href="/stop/rtsp-server">Stop</a></p>
+		<p>ONVIF Service: {{ onvif_status }} | <a href="/start/onvif-server">Start</a> | <a
+				href="/stop/onvif-server">Stop</a></p>
+		<p>Recording: {{ recording_status }} | <a href="/start/recording-server">Start</a> | <a
+				href="/stop/recording-server">Stop</a></p>
+		<h3>Live RTSP Stream</h3>
+		<video controls autoplay>
+			<source src="rtsp://{{ os.getenv('RTSP_USER') }}:{{ os.getenv('RTSP_PASS') }}@<Pi-IP>:8554/stream"
+				type="application/x-rtsp">
+		</video>
+		<br><a href="/logs">View Logs</a> | <a href="/logout">Logout</a>
+	</body>
+
+</html>

@@ -1,0 +1,11 @@
+[Unit]
+Description=RTSP Server for Raspberry Pi Camera
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/start_rtsp.sh
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target

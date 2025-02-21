@@ -1,0 +1,11 @@
+[Unit]
+Description=Flask Web UI for Camera
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/rpi-onvif-camera/dashboard/app.py
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
