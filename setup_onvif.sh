@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Installing ONVIF service..."
+echo "📡 Installing ONVIF service..."
 
 git clone https://github.com/andvikt/onvif_srvd.git
 cd onvif_srvd
@@ -9,7 +9,7 @@ cmake ..
 make
 sudo make install
 
-echo "Configuring ONVIF service..."
+echo "🔧 Configuring ONVIF service..."
 sudo tee /etc/onvif_srvd.conf > /dev/null <<EOF
 device_name = "RaspberryPi Camera"
 manufacturer = "RaspberryPi"
@@ -22,4 +22,4 @@ EOF
 
 cd ..
 rm -rf onvif_srvd
-echo "ONVIF setup complete."
+echo "✅ ONVIF setup complete."

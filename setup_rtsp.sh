@@ -10,7 +10,8 @@ cat << EOF | sudo tee /usr/local/bin/start_rtsp.sh
 gst-launch-1.0 rpicamsrc preview=false \
 ! video/x-h264, width=1280, height=720, framerate=30/1 \
 ! h264parse \
-! rtspclientsink location=rtsp://\$RTSP_USER:\$RTSP_PASS@127.0.0.1:8554/stream
+! rtph264pay config-interval=1 pt=96 \
+! udpsink host=127.0.0.1 port=\$RTSP_PORT
 EOF
 
 sudo chmod +x /usr/local/bin/start_rtsp.sh

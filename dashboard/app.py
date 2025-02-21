@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv("WEB_PASSWORD", "default_secret")
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 def get_service_status(service):
     try:
@@ -21,29 +21,10 @@ def index():
         return redirect(url_for("login"))
     return render_template("index.html", rtsp_status=get_service_status("rtsp-server"),
                            onvif_status=get_service_status("onvif-server"),
-                           recording_status=get_service_status("recording-server"))
-
-@app.route("/logs")
-def logs():
-    if "logged_in" not in session:
-        return redirect(url_for("login"))
-    with open("/var/log/camera_status.log", "r") as log_file:
-        logs = log_file.readlines()
-    return render_template("logs.html", logs=logs)
-
-@app.route("/start/<service>")
-def start_service(service):
-    if "logged_in" not in session:
-        return redirect(url_for("login"))
-    os.system(f"sudo systemctl start {service}")
-    return redirect(url_for("index"))
-
-@app.route("/stop/<service>")
-def stop_service(service):
-    if "logged_in" not in session:
-        return redirect(url_for("index"))
-    os.system(f"sudo systemctl stop {service}")
-    return redirect(url_for("index"))
+                           recording_status=get_service_status("recording-server"),
+                           rtsp_user=os.getenv("RTSP_USER"),
+                           rtsp_pass=os.getenv("RTSP_PASS"),
+                           rtsp_port=os.getenv("RTSP_PORT"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -54,11 +35,6 @@ def login():
             session["logged_in"] = True
             return redirect(url_for("index"))
     return render_template("login.html")
-
-@app.route("/logout")
-def logout():
-    session.pop("logged_in", None)
-    return redirect(url_for("login"))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

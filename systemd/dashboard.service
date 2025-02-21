@@ -6,6 +6,8 @@ After=network.target
 ExecStart=/usr/bin/python3 /home/pi/rpi-onvif-camera/dashboard/app.py
 Restart=always
 User=pi
+WorkingDirectory=/home/pi/rpi-onvif-camera/dashboard
+Environment="PYTHONUNBUFFERED=1"
 
 [Install]
 WantedBy=multi-user.target
